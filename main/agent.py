@@ -5,52 +5,28 @@ from langgraph.prebuilt import ToolNode , tools_condition
 class Agent:
     
     def __init__(self , llm , tools):
-        self.plannerLLM = llm
+        self.llm = llm
         self.tools = tools
     
-    def planner(self , state):
-        pass
+    def llm_invoke(self , state):
+        messages = state["messages"]
+        llm_with_tools = self.llm.bind_tools(self.tools)
+        response = llm_with_tools.invoke(messages)
+        return {"messages": [response]}
 
-    def synthesis(self , state):
-        pass
-
-    def evaluator(self , state):
-        pass
-
-    def citation(self , state):
-        pass
-
-    def build_graph(self , state):
+    def build_graph(self):
         graph = StateGraph(AgentState)
-        # LLM Nodes
-        graph.add_node("Planner" , self.planner)
-        graph.add_node("Synthesis" , self.synthesis)
-        graph.add_node("Evaluator" , self.evaluator)
-        graph.add_node("Citation" , self.citation)
-        
-        # Tool Nodes
-        graph.add_node("Planning_Tools" , ToolNode(tools=PlanningTools))
-        graph.add_node("Synthesis_Tools" , ToolNode(tools=SynthesisTools))
-        graph.add_node("Evaluation_Tools" , ToolNode(tools=EvaluationTools))
-        graph.add_node("Citation_Tools" , ToolNode(tools=CitationTools))
 
-        # Static Edges 
-        graph.add_edge(START , "Planner")
-        graph.add_edge("Planner" , "Synthesis")
-        graph.add_edge("Synthesis" , "Evaluator")
-        graph.add_edge("Evaluator" , "Citation")
-        graph.add_edge("Citation" , END)
+        graph.add_node("llm" , self.llm_invoke)
+        graph.add_node("tools" , ToolNode(tools=self.tools))
 
-        # Conditional Edges
-        graph.add_conditional_edges("Planner" , "Planning_Tools" , tools_condition(PlanningTools))
-        graph.add_conditional_edges("Synthesis" , "Synthesis_Tools" , tools_condition(SynthesisTools))
-        graph.add_conditional_edges("Evaluator" , "Evaluation_Tools" , tools_condition(EvaluationTools))
-        graph.add_conditional_edges("Citation" , "Citation_Tools" , tools_condition(CitationTools))
+        graph.add_edge(START , "llm")
+        graph.add_edge("llm" , END)
 
-        # Tools Response Edges
-        graph.add_edge("Planning_Tools" , "Planner")
-        graph.add_edge("Synthesis_Tools" , "Synthesis")
-        graph.add_edge("Evaluation_Tools" , "Evaluator")
-        graph.add_edge("Citation_Tools" , "Citation")
-
+        graph.add_conditional_edges("llm" , tools_condition,
+            {
+                "tools":"tools",
+                END:END
+            }
+        )
         return graph.compile()
