@@ -22,4 +22,3 @@ def scholarly_search_tool(query: str, max_results=2):
 PlanningTools = []
 SynthesisTools = [ scholarly_search_tool]
 EvaluationTools = []
-CitationTools = []

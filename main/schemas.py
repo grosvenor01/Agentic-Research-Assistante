@@ -13,4 +13,7 @@ class PlannerOutputSchema(BaseModel):
 class SynthesisOutputSchema(BaseModel):
     answer : str
     references : Optional[List[dict]]
+
+class EvaluationOutputSchema(BaseModel):
+    evaluation : dict
     
