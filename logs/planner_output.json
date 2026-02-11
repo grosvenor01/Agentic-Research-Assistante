@@ -1,0 +1,68 @@
+{
+    "messages": [
+        {
+            "content": "\n    Role : \n        You are a planning system that create a full plan to answer the user's research question.\n    Process: \n        1. Understand the user's research question and identify the key components.\n        2. Break down the research question into smaller, manageable sub-questions or tasks.\n        3. For each sub-question or task, determine the necessary steps to find the answer or complete the task.\n            - the existed steps is : \"Search in the web for relevent resources\", \"scrape the resources\" , \"Search relevent information from given knowledge base and research papers\", \"Summarize the information and extract key insights\", \"Generate a comprehensive answer to the research question based on the gathered information\"\n        4. Organize the steps in a logical order to create a comprehensive plan.\n        5. Ensure that the plan is clear, concise, and actionable.\n    \n    Output : \n        A JSON format plan that outlines the steps to answer the user's research question, including any necessary resources that may be required.\n        This plan will sent to a specialiste to excute it, without extra details or message just a json format output \n        Example : \n        {\n            \"plan\": [\n                {\n                    \"step\": \"Search in the web for relevent information\",\n                },\n                {\n                    \"step\": \"Search and Extract information from research papers\",\n                },....\n            ]\n        }\n",
+            "additional_kwargs": {},
+            "response_metadata": {},
+            "type": "system",
+            "name": null,
+            "id": "f9fb3aaf-2d0b-4fa3-8832-68336824d9ab"
+        },
+        {
+            "content": "What are the latest advancements in natural language processing? from announced research papers and generale information",
+            "additional_kwargs": {},
+            "response_metadata": {},
+            "type": "human",
+            "name": null,
+            "id": "7cba5dfd-bda0-49bf-891a-683b4d5d3b22"
+        },
+        {
+            "content": "{\n  \"plan\": [\n    {\n      \"step\": \"Search in the web for recent research papers and articles on natural language processing advancements\"\n    },\n    {\n      \"step\": \"Scrape the resources to gather detailed information from the identified research papers and articles\"\n    },\n    {\n      \"step\": \"Search relevant information from existing knowledge base and research paper summaries about recent developments in NLP\"\n    },\n    {\n      \"step\": \"Summarize the information and extract key insights regarding the latest advancements in NLP\"\n    },\n    {\n      \"step\": \"Generate a comprehensive answer outlining the recent advancements in natural language processing based on the gathered information\"\n    }\n  ]\n}",
+            "additional_kwargs": {
+                "refusal": null
+            },
+            "response_metadata": {
+                "token_usage": {
+                    "completion_tokens": 138,
+                    "prompt_tokens": 328,
+                    "total_tokens": 466,
+                    "completion_tokens_details": {
+                        "accepted_prediction_tokens": 0,
+                        "audio_tokens": 0,
+                        "reasoning_tokens": 0,
+                        "rejected_prediction_tokens": 0
+                    },
+                    "prompt_tokens_details": {
+                        "audio_tokens": 0,
+                        "cached_tokens": 0
+                    }
+                },
+                "model_provider": "openai",
+                "model_name": "gpt-4.1-nano-2025-04-14",
+                "system_fingerprint": "fp_70fc5e01a5",
+                "id": "chatcmpl-D85UeYoYr1FBEtq7bqTB3Rt8Nw3Zn",
+                "service_tier": "default",
+                "finish_reason": "stop",
+                "logprobs": null
+            },
+            "type": "ai",
+            "name": null,
+            "id": "lc_run--019c4d1a-8fe7-79b0-96b2-22d812cc543a-0",
+            "tool_calls": [],
+            "invalid_tool_calls": [],
+            "usage_metadata": {
+                "input_tokens": 328,
+                "output_tokens": 138,
+                "total_tokens": 466,
+                "input_token_details": {
+                    "audio": 0,
+                    "cache_read": 0
+                },
+                "output_token_details": {
+                    "audio": 0,
+                    "reasoning": 0
+                }
+            }
+        }
+    ]
+}

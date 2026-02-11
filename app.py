@@ -5,10 +5,8 @@ from main.schemas import PlannerOutputSchema , SynthesisOutputSchema
 from main.tools import PlanningTools , SynthesisTools , EvaluationTools , CitationTools
 from services.prompts import planning_system_prompt , synthesis_system_prompt , evaluation_system_prompt , citation_system_prompt
 from services.OutputValidator import run_validate
-from scripts.ResearchPapersIngests.extractPDF import save_Qdrant
-from scripts.ResearchPapersIngests.document_downloader import download_pdfs
-import asyncio
-"""
+from services.plan_parser import parse_plan
+
 # Import All Settings 
 settings = Settings()
 
@@ -19,10 +17,11 @@ palnner = Agent(
 ).build_graph()
 
 synthesis = Agent(
-    llm= get_llm(model_name = "gpt-4.1-nano",api_key=settings.openai_api_key , temperature=0.3),
+    llm= get_llm(model_name = "gpt-4.1-nano",api_key=settings.openai_api_key , temperature=0),
     tools = SynthesisTools,
     system_prompt=synthesis_system_prompt
 ).build_graph()
+
 
 evaluator = Agent(
     llm= get_llm(model_name = "gpt-4.1-nano",api_key=settings.openai_api_key , temperature=0.3),
@@ -36,39 +35,10 @@ citation = Agent(
     system_prompt=citation_system_prompt
 ).build_graph()
 
-user_message = "What are the latest advancements in natural language processing?"
-"""
-"""messages = [
-    {"role": "user", "content": user_message}
-]
-
-response = run_validate(palnner , output_schema=PlannerOutputSchema , messages=messages) """
-"""
-plan = {
-  "plan": [
-    {
-      "step": "Search in the web for relevant information on the latest advancements in natural language processing",
-      "resources": ["Google Scholar", "arXiv", "AI research news websites"]
-    },
-    {
-      "step": "Search and extract information from recent research papers and articles published in the last year related to NLP advancements",
-      "resources": ["arXiv", "IEEE Xplore", "ACL Anthology"]
-    },
-    {
-      "step": "Summarize the information and extract key insights on recent trends, breakthroughs, and emerging technologies in NLP",
-      "resources": []
-    },
-    {
-      "step": "Generate a comprehensive answer to the user's research question based on the gathered information",
-      "resources": []
-    }
-  ]
-}
-messages = [
-    {"role": "user", "content": f"user question : {user_message} \n  plan : {plan}"}
-]
-
-response = run_validate(synthesis , output_schema=SynthesisOutputSchema , messages=messages) 
-print(response.answer)"""
+user_message = "What are the latest advancements in natural language processing? from announced research papers and generale information"
+response_planner = run_validate(agent_name="planner", agent=palnner, output_schema=PlannerOutputSchema , input_message=user_message)
+planner_message = f"user question : {user_message} \n  plan : {parse_plan(response_planner.plan)}"
+synthesis_response = run_validate(agent_name="synthesis", agent=synthesis, output_schema=SynthesisOutputSchema , input_message=planner_message) 
+evaluator_response = run_validate(agent_name="evaluator", agent=evaluator, output_schema=None , input_message=f" User Message : {user_message} \n Answer : {synthesis_response.answer} \n References : {synthesis_response.references}")
 
 

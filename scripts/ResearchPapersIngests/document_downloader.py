@@ -4,6 +4,7 @@ import asyncio
 from pathlib import Path
 import json
 
+# Run it One time only to download 10 pdf for testing 
 async def download_pdf(url: str, save_dir: str = "docs") -> str:
     Path(save_dir).mkdir(parents=True, exist_ok=True)
 

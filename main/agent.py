@@ -2,6 +2,7 @@ from langgraph.graph import StateGraph , START , END
 from .schemas import AgentState
 from .tools import PlanningTools , SynthesisTools , EvaluationTools , CitationTools
 from langgraph.prebuilt import ToolNode , tools_condition
+from langchain.messages import SystemMessage
 class Agent:
     
     def __init__(self , llm , tools , system_prompt):
@@ -13,9 +14,9 @@ class Agent:
         if "messages" not in state:
             state["messages"] = []
         
-        if "system_prompt_added" not in state:
-            state["messages"].insert(0, {"role": "system", "content": self.system_prompt})
-            state["system_prompt_added"] = True
+        existing_systems = [m for m in state.get("messages", []) if isinstance(m , SystemMessage)]
+        if not any(m.content == self.system_prompt for m in existing_systems):
+            state["messages"].insert(0, SystemMessage(content=self.system_prompt))
         
         messages = state["messages"]
         llm_with_tools = self.llm.bind_tools(self.tools)
