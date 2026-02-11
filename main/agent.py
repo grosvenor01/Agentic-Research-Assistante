@@ -4,14 +4,23 @@ from .tools import PlanningTools , SynthesisTools , EvaluationTools , CitationTo
 from langgraph.prebuilt import ToolNode , tools_condition
 class Agent:
     
-    def __init__(self , llm , tools):
+    def __init__(self , llm , tools , system_prompt):
         self.llm = llm
         self.tools = tools
+        self.system_prompt = system_prompt
     
     def llm_invoke(self , state):
+        if "messages" not in state:
+            state["messages"] = []
+        
+        if "system_prompt_added" not in state:
+            state["messages"].insert(0, {"role": "system", "content": self.system_prompt})
+            state["system_prompt_added"] = True
+        
         messages = state["messages"]
         llm_with_tools = self.llm.bind_tools(self.tools)
         response = llm_with_tools.invoke(messages)
+
         return {"messages": [response]}
 
     def build_graph(self):
@@ -22,11 +31,12 @@ class Agent:
 
         graph.add_edge(START , "llm")
         graph.add_edge("llm" , END)
-
+        graph.add_edge("tools" , "llm")
         graph.add_conditional_edges("llm" , tools_condition,
             {
                 "tools":"tools",
                 END:END
             }
         )
+
         return graph.compile()
