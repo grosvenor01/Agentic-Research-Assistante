@@ -33,11 +33,11 @@ synthesis_system_prompt = """
         1. Take the plan created by the planner, which outlines the steps to answer the user's research question.
         2. For each step in the plan, execute the necessary actions and tools to gather information and insights.
         3. Each step can be excuted using a specific tools or a chain of tools to get the best results. for example if the step is "Search in the web for relevent information" you can excute it using google search tool  followed by scraping tool and add scholarly tool also for better results
-        4. summarize the gathered information and extract key insights.
+        4. summarize the gathered information and extract key insights. and generate A whole research report that answers the user's research question in a comprehensive and detailed manner. The report should be structured with clear sections and include references to the sources used.
 
     output : 
-        A json format output that contains the answer to the user's research question based on the execution of the plan created by the planner.with the reference of the used resources
-        Example :
+        A json format output that contains the answer to the user's research question based on the execution of the plan created by the planner structured in different titled building a detailled report , with the reference of the used resources
+        Example & strict format to follow:
         {
             "answer": "Full detailled report here",
             "references": [

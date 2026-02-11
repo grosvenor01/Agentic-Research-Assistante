@@ -20,5 +20,5 @@ def scholarly_search_tool(query: str, max_results=2):
     return asyncio.run(scholarly_search(query, max_results))
 
 PlanningTools = []
-SynthesisTools = [ scholarly_search_tool]
+SynthesisTools = [ scholarly_search_tool , google_search_tool , scrape_resources_tool]
 EvaluationTools = []
