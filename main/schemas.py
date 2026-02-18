@@ -7,6 +7,10 @@ from pydantic import BaseModel
 class AgentState(TypedDict):
     messages : Annotated[Sequence[BaseMessage] , add_messages]
 
+class SupervisorSchema(BaseModel):
+    final_report : str
+    final_evaluation : str
+
 class PlannerOutputSchema(BaseModel):
     plan : List[dict]
 
@@ -16,4 +20,5 @@ class SynthesisOutputSchema(BaseModel):
 
 class EvaluationOutputSchema(BaseModel):
     evaluation : dict
+
     

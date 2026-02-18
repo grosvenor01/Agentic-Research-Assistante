@@ -68,16 +68,16 @@ async def save_Qdrant():
     
     # Embed files 
     file_texts = [file["title"] for file in files]
-    TextEmbedding.__init__(AsyncOpenAI(api_key=Settings().openai_api_key), "text-embedding-3-small")
-    embeddings = await TextEmbedding.generate_embeddings(file_texts)
-
+    embedder = TextEmbedding(openai_client=AsyncOpenAI(api_key=Settings().openai_api_key), model_name="text-embedding-3-small")
+    embeddings = await embedder.generate_embeddings(file_texts)
+    
     # Store in Qdrant 
     for file, embedding in zip(files, embeddings):
         await client.upsert(
             collection_name="research_papers",
             points=[
                 {
-                    "id": uuid.uuid4(),
+                    "id": str(uuid.uuid4()),
                     "vector": embedding,
                     "payload": {"text": file["summary"] , "title": file["title"]}
                 }

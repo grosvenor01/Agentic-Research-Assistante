@@ -11,9 +11,9 @@ def make_json_serializable(obj):
         return {k: make_json_serializable(v) for k, v in obj.items()}
     return obj
 
-def run_validate(agent_name:str , agent : Agent, output_schema , input_message: str):
+def run_validate(agent_name:str , agent : Agent, output_schema , input_message: str , config = None):
     messages = [{"role": "user", "content": input_message}]
-    response = agent.invoke({"messages": messages})
+    response = agent.invoke({"messages": messages} , config = config)
     with open(f"logs/{agent_name}_output.json", "w", encoding="utf-8") as f:
         json.dump(make_json_serializable(response), f, ensure_ascii=False, indent=4)
     
