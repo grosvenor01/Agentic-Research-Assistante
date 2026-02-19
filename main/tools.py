@@ -41,10 +41,10 @@ def call_synthesis(plan : str):
     }
 
 @tool
-def call_evaluator(report : str):
-    """This tool generate the detailled evaluation about the generated report"""
+def call_evaluator(answer : str):
+    """This tool generate the detailled evaluation about the generated answer"""
     agent = get_config()["configurable"]["evaluator"]
-    evaluator_response = run_validate(agent_name="evaluator", agent=agent, output_schema=EvaluationOutputSchema , input_message=report)
+    evaluator_response = run_validate(agent_name="evaluator", agent=agent, output_schema=EvaluationOutputSchema , input_message=answer)
     return evaluator_response
 
 

@@ -92,5 +92,5 @@ messages =  [
 output = run_validate(agent_name="supervisor" , agent= supervisor , output_schema= SupervisorSchema, input_message=user_message , config=config)
 with open("final_response2.txt" , "w" , encoding="utf8") as fil:
     fil.write(output.final_report)
-    fil.write(output.final_evaluation)
+    fil.write(str(output.final_evaluation))
     

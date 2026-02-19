@@ -1,12 +1,12 @@
 {
     "messages": [
         {
-            "content": "\n    Role : \n        You are a planning system that create a full plan to answer the user's research question.\n    Process: \n        1. Understand the user's research question and identify the key components.\n        2. Break down the research question into smaller, manageable sub-questions or tasks.\n        3. For each sub-question or task, determine the necessary steps to find the answer or complete the task.\n            - the existed steps is : \"Search in the web for relevent resources\", \"scrape the resources\" , \"Search relevent information from given knowledge base and research papers\", \"Summarize the information and extract key insights\", \"Generate a comprehensive answer to the research question based on the gathered information\"\n        4. Organize the steps in a logical order to create a comprehensive plan.\n        5. Ensure that the plan is clear, concise, and actionable.\n    \n    Output : \n        A JSON format plan that outlines the steps to answer the user's research question, including any necessary resources that may be required.\n        This plan will sent to a specialiste to excute it, without extra details or message just a json format output \n        Example : \n        {\n            \"plan\": [\n                {\n                    \"step\": \"Search in the web for relevent information\",\n                },\n                {\n                    \"step\": \"Search and Extract information from research papers\",\n                },....\n            ]\n        }\n",
+            "content": "\n    Role : \n        You are a planning system that create a full plan to answer the user's research question.\n    Process: \n        1. Understand the user's research question and identify the key components.\n        2. Break down the research question into smaller, manageable sub-questions or tasks.\n        3. For each sub-question or task, determine the necessary steps to find the answer or complete the task.\n            - the existed steps is : \"Search in the web for relevent resources\", \"scrape the resources\" , \"Search relevent information from given knowledge base and research papers\", \"Summarize the information and extract key insights\", \"Generate a comprehensive answer to the research question based on the gathered information\"\n        4. Organize the steps in a logical order to create a comprehensive plan.\n        5. Ensure that the plan is clear, concise, and actionable.\n    \n    Output : \n        A JSON format plan that outlines the steps to answer the user's research question, including any necessary resources that may be required.\n        This plan will sent to a specialiste to excute it, without extra details or message just a json format output \n        Example : \n        {\n            \"plan\": [\n                {\n                    \"step\": \"Search in the web for relevent information\",\n                },\n                {\n                    \"step\": \"Search and Extract information from research papers\",\n                },....\n            ]\n        }\n    \n    - output always a valid json, no extra explanation or detailles\n",
             "additional_kwargs": {},
             "response_metadata": {},
             "type": "system",
             "name": null,
-            "id": "9f6a1583-5084-4a4c-8e63-9f44f75781d7"
+            "id": "62e4bfb9-8bd9-493c-8348-cf2cfaa2b6b4"
         },
         {
             "content": "Compare the architectural differences between Gemini, GPT-4, and Mixtral-style Mixture-of-Experts models, focusing on design choices, reasoning ability, inference cost, and scalability, with references to research papers.",
@@ -14,18 +14,18 @@
             "response_metadata": {},
             "type": "human",
             "name": null,
-            "id": "c6b81a00-db1d-4813-87eb-b862770620c2"
+            "id": "8745a814-abc2-4c8f-881d-af491b9dd320"
         },
         {
-            "content": "{\n  \"plan\": [\n    {\n      \"step\": \"Identify and gather relevant research papers and authoritative resources on Gemini, GPT-4, and Mixtral-style Mixture-of-Experts models.\"\n    },\n    {\n      \"step\": \"Search in the web for recent articles, official publications, and technical reports detailing the architecture of Gemini, GPT-4, and Mixtral MoE models.\"\n    },\n    {\n      \"step\": \"Scrape and extract key architectural details, focusing on design choices, reasoning ability, inference cost, and scalability from the gathered resources.\"\n    },\n    {\n      \"step\": \"Search relevant information from research papers and technical documentation to understand the underlying principles and innovations of each model.\"\n    },\n    {\n      \"step\": \"Summarize the extracted information, highlighting the differences in architecture, reasoning capabilities, inference efficiency, and scalability considerations.\"\n    },\n    {\n      \"step\": \"Generate a comprehensive comparison of Gemini, GPT-4, and Mixtral MoE models, citing specific research papers and sources to support the analysis.\"\n    }\n  ]\n}",
+            "content": "{\n  \"plan\": [\n    {\n      \"step\": \"Identify and gather relevant research papers and authoritative resources on Gemini, GPT-4, and Mixtral-style Mixture-of-Experts models.\"\n    },\n    {\n      \"step\": \"Search in the web for recent and comprehensive articles, technical reports, and official publications related to the architecture of Gemini, GPT-4, and Mixtral models.\"\n    },\n    {\n      \"step\": \"Scrape the identified resources to extract detailed technical descriptions, focusing on design choices, reasoning capabilities, inference costs, and scalability aspects.\"\n    },\n    {\n      \"step\": \"Search relevant information from research papers and technical documentation to understand the underlying architecture and design principles of each model.\"\n    },\n    {\n      \"step\": \"Summarize the extracted information, highlighting key architectural differences, reasoning abilities, inference costs, and scalability considerations.\"\n    },\n    {\n      \"step\": \"Generate a comprehensive comparison report based on the gathered data, including references to the research papers and sources used.\"\n    }\n  ]\n}",
             "additional_kwargs": {
                 "refusal": null
             },
             "response_metadata": {
                 "token_usage": {
-                    "completion_tokens": 220,
-                    "prompt_tokens": 353,
-                    "total_tokens": 573,
+                    "completion_tokens": 213,
+                    "prompt_tokens": 369,
+                    "total_tokens": 582,
                     "completion_tokens_details": {
                         "accepted_prediction_tokens": 0,
                         "audio_tokens": 0,
@@ -40,20 +40,20 @@
                 "model_provider": "openai",
                 "model_name": "gpt-4.1-nano-2025-04-14",
                 "system_fingerprint": "fp_b0b94f3709",
-                "id": "chatcmpl-DAca5g3W3A4D2FwEc1N1hfdcA8FW3",
+                "id": "chatcmpl-DAzsrM5d6ttvTUt37m1vmdOGSotIb",
                 "service_tier": "default",
                 "finish_reason": "stop",
                 "logprobs": null
             },
             "type": "ai",
             "name": null,
-            "id": "lc_run--019c7118-826c-72e0-aecb-07d4e677ffd1-0",
+            "id": "lc_run--019c766f-4d86-7b50-bb1d-2affbd2b7951-0",
             "tool_calls": [],
             "invalid_tool_calls": [],
             "usage_metadata": {
-                "input_tokens": 353,
-                "output_tokens": 220,
-                "total_tokens": 573,
+                "input_tokens": 369,
+                "output_tokens": 213,
+                "total_tokens": 582,
                 "input_token_details": {
                     "audio": 0,
                     "cache_read": 0

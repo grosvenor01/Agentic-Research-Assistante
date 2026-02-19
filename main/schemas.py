@@ -9,7 +9,7 @@ class AgentState(TypedDict):
 
 class SupervisorSchema(BaseModel):
     final_report : str
-    final_evaluation : str
+    final_evaluation : dict
 
 class PlannerOutputSchema(BaseModel):
     plan : List[dict]
@@ -19,6 +19,6 @@ class SynthesisOutputSchema(BaseModel):
     references : Optional[List[dict]]
 
 class EvaluationOutputSchema(BaseModel):
-    evaluation : dict
+    evaluation : str
 
     
