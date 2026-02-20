@@ -6,7 +6,7 @@ from main.tools import PlanningTools , SynthesisTools , EvaluationTools , Superv
 from services.prompts import planning_system_prompt , synthesis_system_prompt , evaluation_system_prompt , supervisor_system_prompt
 from services.OutputValidator import run_validate
 from services.plan_parser import parse_plan
-from services.usage_tracker import track_usage
+from services.usage_tracker import track_usage , track_full_usage
 import os
 import time
 
@@ -41,42 +41,46 @@ user_message = """Compare the architectural differences between Gemini, GPT-4, a
                 Explain how their design choices affect reasoning ability, inference cost, and scalability.
                 Include references to specific research papers.
             """
-# current = time.time()
-# response_planner = run_validate(agent_name="planner", agent=planner, output_schema=PlannerOutputSchema , input_message=user_message)
-# planner_message = f"user question : {user_message} \n  plan : {parse_plan(response_planner.plan)}"
 
-# synthesis_response = run_validate(agent_name="synthesis", agent=synthesis, output_schema=SynthesisOutputSchema , input_message=planner_message) 
-# evaluator_message = f" User Message : {user_message} \n Answer : {synthesis_response.answer} \n References : {synthesis_response.references}"
+# ================================= First Scinario ==============================
+current = time.time()
+response_planner = run_validate(agent_name="planner", agent=planner, output_schema=PlannerOutputSchema , input_message=user_message)
+planner_message = f"user question : {user_message} \n  plan : {parse_plan(response_planner.plan)}"
 
-# evaluator_response = run_validate(agent_name="evaluator", agent=evaluator, output_schema=EvaluationOutputSchema , input_message=evaluator_message)
-# end = time.time()
+synthesis_response = run_validate(agent_name="synthesis", agent=synthesis, output_schema=SynthesisOutputSchema , input_message=planner_message) 
+evaluator_message = f" User Message : {user_message} \n Answer : {synthesis_response.answer} \n References : {synthesis_response.references}"
 
-# #Save Final Response in txt file
-# with open("final_response.txt", "w", encoding="utf-8") as f:
-#     f.write(f"User Message : {user_message} \n\n")
-#     f.write(f"Answer : {synthesis_response.answer} \n\n")
-#     f.write("References : \n")
-#     for ref in synthesis_response.references:
-#         f.write(f"- {ref['title']} : {ref['url']} \n")
+evaluator_response = run_validate(agent_name="evaluator", agent=evaluator, output_schema=EvaluationOutputSchema , input_message=evaluator_message)
+end = time.time()
+
+#Save Final Response in txt file
+with open("final_response.txt", "w", encoding="utf-8") as f:
+    f.write(f"User Message : {user_message} \n\n")
+    f.write(f"Answer : {synthesis_response.answer} \n\n")
+    f.write("References : \n")
+    for ref in synthesis_response.references:
+        f.write(f"- {ref['title']} : {ref['url']} \n")
     
-#     f.write("\n\nEvaluation : \n")
-#     for criterion, result in evaluator_response.evaluation.items():
-#         f.write(f"{criterion.capitalize()} (Score: {result['score']}) : {result['explanation']} \n\n")
+    f.write("\n\nEvaluation : \n")
+    for criterion, result in evaluator_response.evaluation.items():
+        f.write(f"{criterion.capitalize()} (Score: {result['score']}) : {result['explanation']} \n\n")
 
-# # Latency and Usage Tracking
-# input_tokens =0
-# output_tokens=0
-# for i in os.listdir("logs/"):
-#     usage = track_usage(f"logs/{i}")
-#     input_tokens += usage["input_tokens"]
-#     output_tokens += usage["output_tokens"]
+# Latency and Usage Tracking
+input_tokens =0
+output_tokens=0
+for i in os.listdir("logs/"):
+    usage = track_usage(f"logs/{i}")
+    input_tokens += usage["input_tokens"]
+    output_tokens += usage["output_tokens"]
 
-# print(f"Total Input Tokens: {input_tokens}")
-# print(f"Total Output Tokens: {output_tokens}")
-# print(f"Total Cost: ${input_tokens*0.1/1000000 + output_tokens*0.4/1000000}$")
-# print(f"Latency: {end - current} seconds")
+print(f"Total Input Tokens: {input_tokens}")
+print(f"Total Output Tokens: {output_tokens}")
+print(f"Total Cost: ${input_tokens*0.1/1000000 + output_tokens*0.4/1000000}$")
+print(f"Latency: {end - current} seconds")
 
 
+
+# ================================= Second Scinario ==============================
 config = {
     "configurable" : {
         "planner" : planner,
@@ -89,8 +93,16 @@ messages =  [
     {"role" : "user" , "content" : user_message}
 ]
 
+current = time.time()
 output = run_validate(agent_name="supervisor" , agent= supervisor , output_schema= SupervisorSchema, input_message=user_message , config=config)
 with open("final_response2.txt" , "w" , encoding="utf8") as fil:
     fil.write(output.final_report)
     fil.write(str(output.final_evaluation))
-    
+end = time.time()
+
+usage = track_full_usage()
+
+print(f"Latency : {end-current} seconds")
+print(f"Input Tokens: {usage['input_tokens']}")
+print(f"Output Tokens: {usage['output_tokens']}")
+print(f"Total Cost: ${usage['total_price']}")

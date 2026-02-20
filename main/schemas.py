@@ -19,6 +19,6 @@ class SynthesisOutputSchema(BaseModel):
     references : Optional[List[dict]]
 
 class EvaluationOutputSchema(BaseModel):
-    evaluation : str
+    evaluation : dict
 
     
